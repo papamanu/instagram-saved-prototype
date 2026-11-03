@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Instagram Saved Posts – Medium-Fidelity Prototype</title>
+<style>
+:root{--bg:#e9e9ec;--ink:#111;--mut:#6b6b6b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17171a;--ink:#eee;--mut:#a0a0a0}}
+:root[data-theme="dark"]{--bg:#17171a;--ink:#eee;--mut:#a0a0a0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:100vh;display:flex;justify-content:center;padding:20px 12px}
+.stage{display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap;justify-content:center}
+.phone{position:relative;width:390px;max-width:100%;height:844px;background:#fff;color:#111;border:1px solid #dbdbdb;border-radius:36px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.18);display:flex;flex-direction:column}
+.screen{display:flex;flex-direction:column;height:100%;min-height:0}
+.screen[hidden]{display:none}
+.hdr{display:flex;align-items:center;height:52px;padding:0 12px;border-bottom:1px solid #dbdbdb;flex:none;margin-top:14px}
+.hdr h1{flex:1;text-align:center;font-size:17px;font-weight:700;margin:0}
+.ib{background:none;border:0;width:32px;height:32px;display:grid;place-items:center;cursor:pointer;color:#111;border-radius:50%;font-size:20px}
+.ib:hover{background:#f2f2f2}
+.sb{margin:12px 14px 0;position:relative}
+.sb .bar{display:flex;align-items:center;gap:8px;background:#efefef;border:1.5px solid transparent;border-radius:12px;padding:0 10px;height:44px}
+.sb .bar:focus-within{border-color:#0095f6;background:#fff}
+.sb input{flex:1;border:0;background:none;outline:0;font:inherit;font-size:15px;color:#111;min-width:0}
+.ai{font-size:11px;font-weight:700;color:#6a3df0;background:#efe9ff;border-radius:8px;padding:3px 7px;white-space:nowrap}
+.go{background:#0095f6;color:#fff;border:0;border-radius:8px;width:30px;height:30px;font-size:16px;cursor:pointer}
+.sug{position:absolute;left:0;right:0;top:50px;background:#fff;border:1px solid #dbdbdb;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.14);z-index:5;padding:6px 0}
+.sug[hidden]{display:none}
+.sug small{display:block;padding:6px 14px 4px;color:#6b6b6b;font-size:12px;font-weight:600}
+.sug button{display:flex;gap:10px;width:100%;text-align:left;background:none;border:0;padding:10px 14px;font:inherit;font-size:14px;color:#111;cursor:pointer}
+.sug button:hover{background:#f5f5f5}
+.chips{display:flex;gap:8px;padding:12px 14px 4px;overflow-x:auto;flex:none;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid #dbdbdb;background:#fff;color:#111;border-radius:18px;padding:7px 14px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.chip:hover{background:#f5f5f5}
+.chip.on{background:#111;border-color:#111;color:#fff}
+.chip.on::after{content:" ×";font-weight:700}
+.stat{padding:6px 16px 8px;font-size:12.5px;color:#6b6b6b;flex:none;min-height:28px}
+.body{flex:1;overflow-y:auto;padding:0 14px 20px;min-height:0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{border:1px solid #ececec;border-radius:12px;padding:8px;background:#fff}
+.th{aspect-ratio:1/0.82;border-radius:8px;display:grid;place-items:center;font-size:44px}
+.ti{font-size:14px;font-weight:600;margin:8px 2px 6px;line-height:1.25}
+.tg{display:flex;flex-wrap:wrap;gap:5px;margin:0 2px}
+.tag{font-size:11.5px;font-weight:600;color:#6a3df0;background:#efe9ff;border-radius:10px;padding:3px 8px}
+.tag.none{color:#777;background:#f0f0f0}
+.ed{margin:8px 2px 2px;background:none;border:0;color:#0095f6;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;padding:2px 0}
+.ed:hover{text-decoration:underline}
+.qp{margin:12px 14px 0;background:#f3f3f3;border-radius:12px;padding:10px 12px;font-size:14px;display:flex;gap:8px;align-items:center}
+.qp b{font-weight:600}
+.row{display:flex;gap:12px;border:1px solid #ececec;border-radius:12px;padding:10px;margin-bottom:12px}
+.row .th{width:84px;aspect-ratio:1;flex:none;font-size:34px}
+.row .mid{flex:1;min-width:0}
+.why{margin-top:8px;background:#f2f8ff;border-left:3px solid #0095f6;border-radius:6px;padding:6px 8px;font-size:12.5px;line-height:1.35}
+.why b{display:block;font-size:11px;color:#0070c0;margin-bottom:2px}
+.why i{display:block;color:#6b6b6b;font-style:normal;font-size:11.5px;margin-top:2px}
+.empty{text-align:center;color:#6b6b6b;padding:50px 20px;font-size:14px}
+.modal{position:absolute;inset:0;background:rgba(0,0,0,.45);display:grid;place-items:center;z-index:20;padding:20px}
+.modal[hidden]{display:none}
+.sheet{background:#fff;border-radius:16px;width:100%;padding:18px;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.sheet h2{margin:0 0 2px;font-size:17px}
+.sheet p{margin:0 0 12px;color:#6b6b6b;font-size:13px}
+.sheet h3{margin:14px 0 8px;font-size:12px;color:#6b6b6b;text-transform:uppercase;letter-spacing:.04em}
+.wrap{display:flex;flex-wrap:wrap;gap:8px;min-height:30px}
+.rm{border:0;font:inherit;font-size:13px;font-weight:600;color:#6a3df0;background:#efe9ff;border-radius:14px;padding:6px 10px;cursor:pointer}
+.rm::after{content:" ×";color:#c0392b}
+.ad{border:1px dashed #b8b8b8;font:inherit;font-size:13px;background:#fff;color:#111;border-radius:14px;padding:6px 10px;cursor:pointer}
+.ad::before{content:"+ "}
+.ad:hover{background:#f5f5f5}
+.acts{display:flex;gap:10px;margin-top:18px}
+.acts button{flex:1;height:40px;border-radius:10px;font:inherit;font-weight:600;font-size:14px;cursor:pointer;border:0}
+.sv{background:#0095f6;color:#fff}.cn{background:#efefef;color:#111}
+.toast{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);background:#111;color:#fff;font-size:13px;padding:10px 16px;border-radius:20px;z-index:30;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+.ctl{width:200px;max-width:100%;padding-top:14px}
+.ctl button{width:100%;height:42px;background:#fff;color:#111;border:2px dashed #888;border-radius:10px;font:inherit;font-weight:700;cursor:pointer}
+.ctl button:hover{background:#f3f3f3}
+.ctl p{font-size:12px;color:var(--mut);line-height:1.4;margin:8px 0 0}
+@media(max-width:620px){.ctl{width:390px}}
+</style>
+</head>
+<body>
+<div class="stage">
+<div class="phone" id="phone">
+
+<section class="screen" id="s1">
+  <div class="hdr"><button class="ib" aria-label="Back">‹</button><h1>Saved</h1><button class="ib" aria-label="More">⋯</button></div>
+  <div class="sb">
+    <div class="bar">
+      <span aria-hidden="true">🔍</span>
+      <input id="q" type="text" placeholder="Search saved posts…" autocomplete="off" aria-label="Smart search">
+      <span class="ai">✦ AI</span>
+      <button class="go" id="go" aria-label="Search">→</button>
+    </div>
+    <div class="sug" id="sug" hidden></div>
+  </div>
+  <div class="chips" id="c1"></div>
+  <div class="stat" id="st1"></div>
+  <div class="body"><div class="grid" id="grid"></div></div>
+</section>
+
+<section class="screen" id="s2" hidden>
+  <div class="hdr"><button class="ib" id="back" aria-label="Back to Saved">‹</button><h1>Search results</h1><span style="width:32px"></span></div>
+  <div class="qp"><span aria-hidden="true">🔍</span><span>“<b id="qt"></b>”</span></div>
+  <div class="chips" id="c2"></div>
+  <div class="stat" id="st2"></div>
+  <div class="body" id="res"></div>
+</section>
+
+<div class="modal" id="modal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mt">
+    <h2 id="mt">Edit tags</h2>
+    <p id="mp"></p>
+    <h3>AI-generated tags · tap to remove</h3>
+    <div class="wrap" id="cur"></div>
+    <h3>Add a tag</h3>
+    <div class="wrap" id="avail"></div>
+    <div class="acts"><button class="cn" id="cn">Cancel</button><button class="sv" id="sv">Save</button></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+</div>
+
+<aside class="ctl">
+  <button id="reset">Reset Prototype</button>
+  <p>Testing control – not part of the Instagram interface.</p>
+</aside>
+</div>
+
+<script>
+const ALL=['Food','Fitness','Travel','Fashion','Technology','Recipe'];
+const P=[
+{id:1,t:'Pasta Recipe',e:'🍝',g:['#ffd8a8','#f08a5d'],tags:['Food','Recipe'],kw:'pasta recipe cook cooking dinner italian noodles spaghetti',why:'This post contains a pasta recipe.'},
+{id:2,t:'Chest Workout Routine',e:'🏋️',g:['#b8d8ff','#5b8def'],tags:['Fitness'],kw:'workout chest gym exercise routine training lifting',why:'This post is a chest workout routine.'},
+{id:3,t:'Japan Travel Guide',e:'🗾',g:['#ffc9d9','#e0537d'],tags:['Travel'],kw:'japan travel guide tokyo kyoto trip itinerary places',why:'This post is a guide to places in Japan.'},
+{id:4,t:'Outfit Inspiration',e:'👗',g:['#e5d4ff','#9b6bf0'],tags:['Fashion'],kw:'outfit fashion clothes style wear wardrobe inspiration',why:'This post shows outfit and style ideas.'},
+{id:5,t:'Python Programming Tips',e:'🐍',g:['#c7f0d8','#34a874'],tags:['Technology'],kw:'python programming code coding tech tips developer',why:'This post shares Python coding tips.'},
+{id:6,t:'Restaurant Recommendations',e:'🍽️',g:['#ffe7a3','#e8a817'],tags:['Food','Travel'],kw:'restaurant restaurants recommendations eat eating dining food places',why:'This post lists restaurant recommendations.'},
+{id:7,t:'Healthy Meal Prep',e:'🥗',g:['#d4f1a8','#6fb52c'],tags:['Food','Fitness'],kw:'meal prep healthy food lunch recipe nutrition',why:'This post covers healthy meal prep ideas.'},
+{id:8,t:'Vacation Destinations',e:'🏝️',g:['#bff0ee','#2bb3b1'],tags:['Travel'],kw:'vacation destinations holiday beach trip places travel',why:'This post lists vacation destinations.'}];
+const SUGG=['Find the pasta recipe I saved','Show me workout posts','Places I saved for Japan','Find restaurant recommendations'];
+const STOP=new Set('find the a an i me my saved save show posts post for of to in some that ive what where is are about from with and or'.split(' '));
+const $=id=>document.getElementById(id);
+let tags,f1,f2,q,results,draft,editId,tt;
+
+function resetAll(){
+  tags={};P.forEach(p=>tags[p.id]=[...p.tags]);
+  f1=[];f2=[];q='';results=[];draft=[];editId=null;
+  $('q').value='';$('sug').hidden=true;$('modal').hidden=true;
+  $('s1').hidden=false;$('s2').hidden=true;
+  document.querySelectorAll('.body').forEach(b=>b.scrollTop=0);
+  render();
+}
+const tagHtml=id=>tags[id].length?tags[id].map(t=>`<span class="tag">✦ ${t}</span>`).join(''):'<span class="tag none">No tags</span>';
+const thumb=p=>`<div class="th" style="background:linear-gradient(135deg,${p.g[0]},${p.g[1]})"><span aria-hidden="true">${p.e}</span></div>`;
+const chipsHtml=(sel,k)=>ALL.map(t=>`<button class="chip${sel.includes(t)?' on':''}" data-${k}="${t}" aria-pressed="${sel.includes(t)}">${t}</button>`).join('');
+const match=(id,sel)=>sel.every(t=>tags[id].includes(t));
+
+function render(){
+  $('c1').innerHTML=chipsHtml(f1,'f1');
+  const list=P.filter(p=>match(p.id,f1));
+  $('st1').textContent=f1.length?`Showing ${list.length} of ${P.length} saved posts · ${f1.join(' + ')}`:`${P.length} saved posts · AI tags shown on each post`;
+  $('grid').innerHTML=list.length?list.map(p=>`<div class="card">${thumb(p)}<div class="ti">${p.t}</div><div class="tg">${tagHtml(p.id)}</div><button class="ed" data-edit="${p.id}">✎ Edit tags</button></div>`).join(''):'';
+  if(!list.length)$('grid').innerHTML='<div class="empty" style="grid-column:1/-1">No saved posts have all of these tags. Tap a selected filter to remove it.</div>';
+  $('qt').textContent=q;
+  $('c2').innerHTML=chipsHtml(f2,'f2');
+  const r=results.filter(x=>match(x.p.id,f2));
+  $('st2').textContent=results.length?(f2.length?`Showing ${r.length} of ${results.length} results · ${f2.join(' + ')}`:`${results.length} result${results.length>1?'s':''} found`):'';
+  $('res').innerHTML=!results.length?'<div class="empty">No matching saved posts found.<br>Try “Show me workout posts”.</div>':!r.length?'<div class="empty">No results match these filters.<br>Tap a selected filter to remove it.</div>':
+    r.map(({p,hits})=>`<div class="row">${thumb(p)}<div class="mid"><div class="ti" style="margin-top:0">${p.t}</div><div class="tg" style="margin:0">${tagHtml(p.id)}</div><div class="why"><b>✦ Why this matched</b>“${p.why}”<i>Matched: ${hits.map(h=>'“'+h+'”').join(', ')}</i></div><button class="ed" data-edit="${p.id}" style="margin-left:0">✎ Edit tags</button></div></div>`).join('');
+}
+
+function search(query){
+  const words=query.toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(w=>w&&!STOP.has(w));
+  let res=P.map(p=>{
+    const hay=(p.kw+' '+p.t+' '+tags[p.id].join(' ')).toLowerCase().split(/\s+/);
+    const hits=[...new Set(words.filter(w=>hay.some(h=>h===w||(w.length>3&&h.length>3&&(h.startsWith(w)||w.startsWith(h))))))];
+    return {p,hits};
+  }).filter(r=>r.hits.length).sort((a,b)=>b.hits.length-a.hits.length);
+  if(res.length&&res[0].hits.length>=2)res=res.filter(r=>r.hits.length>=2);
+  return res;
+}
+function submit(text){
+  text=(text||'').trim();if(!text)return;
+  q=text;results=search(q);f2=[];$('sug').hidden=true;$('q').blur();
+  $('s1').hidden=true;$('s2').hidden=false;
+  $('res').scrollTop=0;render();
+  toast(results.length?`${results.length} saved post${results.length>1?'s':''} found`:'No matches found');
+}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),1800)}
+function toggle(arr,v){const i=arr.indexOf(v);i<0?arr.push(v):arr.splice(i,1)}
+
+function drawModal(){
+  $('cur').innerHTML=draft.length?draft.map(t=>`<button class="rm" data-rm="${t}" aria-label="Remove ${t}">✦ ${t}</button>`).join(''):'<span style="color:#888;font-size:13px">No tags – add one below.</span>';
+  const rest=ALL.filter(t=>!draft.includes(t));
+  $('avail').innerHTML=rest.length?rest.map(t=>`<button class="ad" data-add="${t}">${t}</button>`).join(''):'<span style="color:#888;font-size:13px">All tags added.</span>';
+}
+
+document.addEventListener('click',e=>{
+  const c=e.target.closest('[data-f1],[data-f2],[data-edit],[data-sug],[data-rm],[data-add]');
+  if(!c)return;
+  const d=c.dataset;
+  if(d.f1){toggle(f1,d.f1);render();toast(f1.includes(d.f1)?`Filter: ${d.f1}`:`Removed filter: ${d.f1}`)}
+  else if(d.f2){toggle(f2,d.f2);render();toast(f2.includes(d.f2)?`Filter: ${d.f2}`:`Removed filter: ${d.f2}`)}
+  else if(d.edit){editId=+d.edit;draft=[...tags[editId]];$('mp').textContent=P.find(p=>p.id===editId).t;drawModal();$('modal').hidden=false}
+  else if(d.sug){$('q').value=d.sug;submit(d.sug)}
+  else if(d.rm){draft=draft.filter(t=>t!==d.rm);drawModal()}
+  else if(d.add){draft.push(d.add);drawModal()}
+});
+$('sug').innerHTML='<small>Try asking</small>'+SUGG.map(s=>`<button data-sug="${s}"><span aria-hidden="true">🔍</span>${s}</button>`).join('');
+$('sug').addEventListener('mousedown',e=>e.preventDefault());
+$('q').addEventListener('focus',()=>$('sug').hidden=false);
+$('q').addEventListener('blur',()=>setTimeout(()=>$('sug').hidden=true,120));
+$('q').addEventListener('keydown',e=>{if(e.key==='Enter')submit($('q').value)});
+$('go').addEventListener('mousedown',e=>e.preventDefault());
+$('go').addEventListener('click',()=>submit($('q').value));
+$('back').addEventListener('click',()=>{$('s2').hidden=true;$('s1').hidden=false;$('q').value='';render()});
+$('cn').addEventListener('click',()=>{$('modal').hidden=true;editId=null});
+$('sv').addEventListener('click',()=>{tags[editId]=[...draft];$('modal').hidden=true;editId=null;render();toast('Tags updated')});
+$('reset').addEventListener('click',()=>{resetAll();toast('Prototype reset')});
+resetAll();
+</script>
+</body>
+</html>
